@@ -9,8 +9,7 @@ FixMiniServer Mock server for testing
 
 import fixminiserver
 
-
-class fixmockserver(fixminiserver.fixminiserver):
+class fixmockserver:
     
     _fix_msg_dict = None
 
@@ -19,7 +18,7 @@ class fixmockserver(fixminiserver.fixminiserver):
         
     def newOrdeMsg(self, id, symbol, side, price, size):
         try:
-            self._fix_msg_dict[id] = list(symbol, side, price, size)
+            self._fix_msg_dict[id] = list((symbol, side, price, size))
             return  {
                 'id': id,
                 'symbol': symbol,
@@ -40,7 +39,8 @@ class fixmockserver(fixminiserver.fixminiserver):
     def modifyOrderMsg(self, id, newsize):
         try:
             symbol, side, price,size = self._fix_msg_dict[id]
-            size = newsize  
+            size = newsize
+            self._fix_msg_dict[id] = list((symbol, side, price,size))
             return  {
                 'id': id,
                 'symbol': symbol,
@@ -61,7 +61,8 @@ class fixmockserver(fixminiserver.fixminiserver):
     def removeOrderMsg(self, id):
         try:
             symbol, side, price,size = self._fix_msg_dict[id]
-            self._fix_msg_dict.remove(id)
+            x = self._fix_msg_dict.pop(id)
+            print(x)
             return  {
                 'id': id,
                 'symbol': symbol,
