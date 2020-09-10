@@ -7,12 +7,9 @@ FixMiniServer is a smallest fix server (interface)
 """
 
 
-class fixminiserver :
+class fixminiserver:
 
-     
-    def __init__(self, hosts, port):
-        pass
-        
+    
     def newOrdeMsg(self, id, symbol, side, price, size):
         pass
     

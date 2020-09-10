@@ -5,17 +5,18 @@ Created on Thu Aug 20 23:33:29 2020
 @author: Tony
 """
 
-import TestFixMockServer
 
-class TestNew(TestFixMockServer):
+import unittest
+from fixmockserver import fixmockserver
+
+class TestNew(unittest.TestCase):
     
-    def addOrder(self):
-        self.fs.addOrder(1234, "EUR/USD", "BUY", 110, 100000)
- 
-#    def removeOrder(self):
-#        self.fs.removeOrder(1234)
+    def setUp(self):
+        self.fs = fixmockserver()
         
-#    def updateOrder(self, size):
-#        self.fs.updateOrder(1234, size)
+    def test_addOrder(self):
+        result = self.fs.newOrdeMsg(1234, "EUR/USD", "BUY", 1.1501, 100000)
+        print(result)
+        self.assertEqual('New', result.get('status'))
         
 
