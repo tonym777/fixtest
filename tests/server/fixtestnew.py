@@ -5,18 +5,17 @@ Created on Thu Aug 20 23:33:29 2020
 @author: Tony
 """
 
-
 import unittest
-from fixmockserver import fixmockserver
+
+from src.server.fixmockserver import FIXMockServer
+
 
 class TestNew(unittest.TestCase):
-    
+
     def setUp(self):
-        self.fs = fixmockserver()
-        
+        self.fs = FIXMockServer()
+
     def test_addOrder(self):
-        result = self.fs.newOrdeMsg(1234, "EUR/USD", "BUY", 1.1501, 100000)
+        result = self.fs.new_order(1234, "EUR/USD", "BUY", 1.1501, 100000)
         print(result)
         self.assertEqual('New', result.get('status'))
-        
-
