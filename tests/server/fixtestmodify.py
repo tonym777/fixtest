@@ -15,7 +15,7 @@ class TestModify(unittest.TestCase):
         self.fs = FIXMockServer()
         
     def test_modifyOrder(self):
-        result = self.fs.new_order(1234, "EUR/USD", "BUY", 110, 100000)
+        result = self.fs.new_order(1234, "IBM", "BUY", 110, 100000)
         self.assertEqual('New', result.get('status'))
         result = self.fs.modify_order(1234, 200000)
         self.assertEqual('Updated', result.get('status'))

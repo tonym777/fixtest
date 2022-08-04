@@ -9,7 +9,6 @@ class TestNewOrderSingle(unittest.TestCase):
         pass
 
     def test_new_single_order(self):
-        order = NewSingleOrder("EUR/USD", "BUY", 110, 100000)
+        order = NewSingleOrder("IBM", "BUY", 110, 100000)
         fix = order.build_fix_message()
-
-        self.assertEqual('Updated', fix.get('status'))
+        self.assertEqual(True, fix.__contains__('55=IBM'))
