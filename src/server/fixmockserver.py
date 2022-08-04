@@ -8,17 +8,19 @@ FixMiniServer Mock server for testing
 """
 
 from .fixminiserver import FIXMiniServer
+from src.utils.mongodb_api import MongoDBAPI
 
 
 class FIXMockServer(FIXMiniServer):
 
     def __init__(self, hosts=None, port=None):
+        self.db = MongoDBAPI()
         self._fix_msg_dict = {}
 
     def new_order(self, order_id, symbol, side, price, size):
         try:
             self._fix_msg_dict[order_id] = list((symbol, side, price, size))
-            return {
+            order_dict = {
                 'id': order_id,
                 'symbol': symbol,
                 'side': side,
@@ -26,6 +28,8 @@ class FIXMockServer(FIXMiniServer):
                 'size': size,
                 'status': 'New'
             }
+            self.db.insert(order_dict)
+            return order_dict
         except KeyError:
             print("error insert order={id}")
             return {
@@ -38,7 +42,7 @@ class FIXMockServer(FIXMiniServer):
             symbol, side, price, size = self._fix_msg_dict[order_id]
             size = new_size
             self._fix_msg_dict[order_id] = list((symbol, side, price, size))
-            return {
+            order_dict = {
                 'id': order_id,
                 'symbol': symbol,
                 'side': side,
@@ -46,8 +50,10 @@ class FIXMockServer(FIXMiniServer):
                 'size': size,
                 'status': 'Updated'
             }
+            self.db.insert(order_dict)
+            return order_dict
         except KeyError:
-            print("error update order={id}")
+            print("error update order={}", order_id)
             return {
                 'id': order_id,
                 'status': 'Update Rejected'
@@ -57,7 +63,7 @@ class FIXMockServer(FIXMiniServer):
         try:
             symbol, side, price, size = self._fix_msg_dict[order_id]
             x = self._fix_msg_dict.pop(order_id)
-            return {
+            order_dict = {
                 'id': order_id,
                 'symbol': symbol,
                 'side': side,
@@ -65,8 +71,10 @@ class FIXMockServer(FIXMiniServer):
                 'size': size,
                 'status': 'Deleted'
             }
+            self.db.insert(order_dict)
+            return order_dict
         except KeyError:
-            print("error remove order={order_id}")
+            print("error remove order={}", order_id)
             return {
                 'id': order_id,
                 'status': 'Remove Rejected'
