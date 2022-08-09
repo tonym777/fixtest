@@ -17,5 +17,4 @@ class TestNew(unittest.TestCase):
 
     def test_addOrder(self):
         result = self.fs.new_order(1234, "IBM", "BUY", 1.1501, 100000)
-        print(result)
         self.assertEqual('New', result.get('status'))

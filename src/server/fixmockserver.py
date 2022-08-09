@@ -21,19 +21,19 @@ class FIXMockServer(FIXMiniServer):
         try:
             self._fix_msg_dict[order_id] = list((symbol, side, price, size))
             order_dict = {
-                'id': order_id,
+                'order_id': order_id,
                 'symbol': symbol,
                 'side': side,
                 'price': price,
                 'size': size,
                 'status': 'New'
             }
-            self.db.insert(order_dict)
+            self.db.insert_one("fix_orders", order_dict)
             return order_dict
         except KeyError:
             print("error insert order={id}")
             return {
-                'id': order_id,
+                'order_id': order_id,
                 'status': 'Rejected'
             }
 
@@ -43,39 +43,38 @@ class FIXMockServer(FIXMiniServer):
             size = new_size
             self._fix_msg_dict[order_id] = list((symbol, side, price, size))
             order_dict = {
-                'id': order_id,
+                'order_id': order_id,
                 'symbol': symbol,
                 'side': side,
                 'price': price,
                 'size': size,
                 'status': 'Updated'
             }
-            self.db.insert(order_dict)
+            self.db.insert_one('fix_orders', order_dict)
             return order_dict
         except KeyError:
             print("error update order={}", order_id)
             return {
-                'id': order_id,
+                'order_id': order_id,
                 'status': 'Update Rejected'
             }
 
     def delete_order(self, order_id):
         try:
             symbol, side, price, size = self._fix_msg_dict[order_id]
-            x = self._fix_msg_dict.pop(order_id)
             order_dict = {
-                'id': order_id,
+                'order_id': order_id,
                 'symbol': symbol,
                 'side': side,
                 'price': price,
                 'size': size,
                 'status': 'Deleted'
             }
-            self.db.insert(order_dict)
+            self.db.insert_one('fix_orders',order_dict)
             return order_dict
         except KeyError:
             print("error remove order={}", order_id)
             return {
-                'id': order_id,
+                'order_id': order_id,
                 'status': 'Remove Rejected'
             }
