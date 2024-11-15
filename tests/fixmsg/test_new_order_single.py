@@ -12,3 +12,4 @@ class TestNewOrderSingle(unittest.TestCase):
         order = NewSingleOrder("IBM", "BUY", 110, 100000)
         fix = order.build_fix_message()
         self.assertEqual(True, fix.__contains__('55=IBM'))
+        self.assertEqual(True, fix.__contains__('10='))
