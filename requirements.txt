@@ -1,2 +1,2 @@
-simplefix==1.0.15
-pymongo==4.2.0
+simplefix==1.0.17
+pymongo==4.11.1
