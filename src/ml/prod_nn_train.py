@@ -1,7 +1,7 @@
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as f
-from torch.optim import SGD
 
 
 
@@ -9,20 +9,15 @@ class ProdNN_Train(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.a1 = nn.Parameter(torch.tensort(3.0), requires_grad=False)
-        self.b1 = nn.Parameter(torch.tensort(10.9), requires_grad=False)
-        self.f1 = nn.Parameter(torch.tensort(-10.8), requires_grad=False)
-        self.a2 = nn.Parameter(torch.tensort(4.5), requires_grad=False)
-        self.b2 = nn.Parameter(torch.tensort(-10.7), requires_grad=False)
-        self.f2 = nn.Parameter(torch.tensort(15.0), requires_grad=False)
-        self.delta = nn.Parameter(torch.tensort(.0), requires_grad=True)
+        self.a1 = nn.Parameter(torch.Tensor([3.0]), requires_grad=False)
+        self.b1 = nn.Parameter(torch.Tensor([10.9]), requires_grad=False)
+        self.f1 = nn.Parameter(torch.Tensor([-10.8]), requires_grad=False)
+        self.delta = nn.Parameter(torch.Tensor([.0]), requires_grad=True)
 
-    def forward(self, input):
-        relu_input_1 = input * self.a1 + self.b1
+    def forward(self, data):
+        relu_input_1 = data * self.a1 + self.b1
         relu_output_1 = f.relu(relu_input_1) * self.f1
-        relu_input_2 = input * self.a2 + self.b2
-        relu_output_2 = f.relu(relu_input_2) * self.f2
-        output = f.relu(relu_output_1 + relu_output_2 + self.delta)
+        output = f.relu(relu_output_1 + self.delta)
         return output
 
 
@@ -30,24 +25,30 @@ class ProdNN_Train(nn.Module):
 if __name__ == '__main__':
 
     model = ProdNN_Train()
-    optimizer = SGD(model.parameters(), lr=0.05)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.005)
 
-    inputs = []
-    labels = []
+    input_df = pd.read_csv('inputs.csv')
+    label_df = pd.read_csv('labels.csv')
 
-    for epoch in range(100):
+    input_dataset = torch.Tensor(input_df['data'].values)
+    label_dataset = torch.Tensor(label_df['data'].values)
+
+    epochs = 1000
+    lost_threshold = 0.001
+
+    for epoch in range(epochs):
         total_loss = 0
 
-        for i in range(len(inputs)):
-            input_i = inputs[i]
-            label_i = labels[i]
+        for i in range(len(input_df)):
+            input_i = input_df.iloc[i, 1]
+            label_i = label_df.iloc[i, 1]
 
             output_i = model(input_i)
             loss = (output_i - label_i) ** 2
             loss.backward()
             total_loss += float(loss)
 
-        if total_loss < 0.001:
+        if total_loss < lost_threshold:
             print("Num steps: " + str(epoch))
             break
 
