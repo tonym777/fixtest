@@ -1,5 +1,16 @@
-from src.stat.spark_connector import SparkConnector
+"""
+Created on Thu Aug 20 22:59:04 2020
 
+SparkETL:
+ use Spark connector to
+    perform Extract (from csv file),
+    Transform (remap columns)
+    Load data into SQL
+
+@author: Tony
+"""
+
+from src.stat.spark_connector import SparkConnector
 
 class SparkETL:
 

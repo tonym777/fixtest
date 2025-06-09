@@ -1,3 +1,12 @@
+"""
+Created on Thu Aug 20 22:59:04 2020
+
+MongoDB simple wrapper
+
+@author: Tony
+"""
+
+
 import pymongo
 
 
