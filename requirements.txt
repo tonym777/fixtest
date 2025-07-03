@@ -2,6 +2,6 @@ simplefix==1.0.17
 pymongo==4.11.1
 pandas==2.2.3
 torch>=2.7.1
-requests==2.32.0
+requests>=2.32.4
 pyotp>=2.9.0
 qrcode>=8.2
