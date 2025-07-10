@@ -21,7 +21,7 @@ class ISINStore(VectorStore):
 
     def is_isin_format_valid(self, token):
         """Checks if a string conforms to the ISIN format."""
-        pattern = r"^[A-Z]{2}[A-Z0-9]{9}\d$"
+        pattern = r"^[a-z]{2}[a-z0-9]{9}\d$"
         return re.match(pattern, token) is not None
 
     def build_store_from_data(self, sentences):
