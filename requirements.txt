@@ -5,3 +5,5 @@ torch>=2.7.1
 requests>=2.32.4
 pyotp>=2.9.0
 qrcode>=8.2
+numpy~=2.0.2
+pyspark~=3.5.3
