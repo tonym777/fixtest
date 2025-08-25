@@ -7,17 +7,18 @@ MongoDB simple wrapper
 """
 
 
-import pymongo
+from pymongo import MongoClient
 
 
 class MongoDBAPI:
 
     def __init__(self):
-        self.mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self.mongo_client = MongoClient("mongodb://localhost:27017/")
         self.db = self.mongo_client["fix"]
 
     def insert_one(self, collection_name, record):
         collection = self.db[collection_name]
+        collection.bulk_write()
         collection.insert_one(record)
 
     def insert_many(self, collection_name, records):

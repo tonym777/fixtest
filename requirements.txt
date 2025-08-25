@@ -7,3 +7,4 @@ pyotp>=2.9.0
 qrcode>=8.2
 numpy~=2.0.2
 pyspark~=3.5.3
+mongomock~=4.3.0
